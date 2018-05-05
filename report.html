@@ -13907,7 +13907,8 @@ $$</p>
 <p>We have imported some Python modules to get you started, but feel free to import as many modules as you need.  If you end up getting stuck, here's a hint that specifies a model that trains relatively fast on CPU and attains &gt;1% test accuracy in 5 epochs:</p>
 <p><img src="images/sample_cnn.png" alt="Sample CNN"></p>
 <p><strong>Question 4:</strong> Outline the steps you took to get to your final CNN architecture and your reasoning at each step.  If you chose to use the hinted architecture above, describe why you think that CNN architecture should work well for the image classification task.</p>
-<p><strong>Answer:</strong></p>
+<p><strong>Answer:</strong> 
+For the networks architecture I choosen follwing layers. First three pairs of convolutional and maxpooling layers. The first layer has 16 filters. The seconds 32 and the third 64 filters. So each convolutional layer increase the number of feature maos to dedect specific pattern. Every convolutional layer has a kernel_size of 2, so with each layer the size of the convolutional window is reduced to the half. With each MaxPooling layers we reduce the dimensionality of each feature map. The there is a global average pooling layer wich does a more extrem dimensionality reduction of the filters. At the end there is a fully connected Dense layer. With this approach we have a total of 19189 parameters to train. As we have a multi categorical problem we use categorical_crossentropy as loss function.</p>
 
 </div>
 </div>
@@ -14683,7 +14684,34 @@ Shape of test_Resnet50: (836, 1, 1, 2048)
 
 </code></pre>
 <p><strong>Question 5:</strong> Outline the steps you took to get to your final CNN architecture and your reasoning at each step.  Describe why you think the architecture is suitable for the current problem.</p>
-<p><strong>Answer:</strong></p>
+<p><strong>Answer:</strong> 
+For the transfer learning we add a GlobalAveragePooling and a Dense layer in order tho categorize the 133 breed classes from the bottleneck_features. The GlobalAveragePooling greatly reduce the dimensionality of the filters and the Dense layer connect to the 133 breed classes.</p>
+<p>I was testing two different pretrained networks. a) VGG19 and b) Resnet50 network architecture.</p>
+<table>
+<thead><tr>
+<th>Network</th>
+<th>Training Parameter</th>
+<th>Training Epochs</th>
+<th>Test  Accuracy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>VGG19</td>
+<td>68,229</td>
+<td>20</td>
+<td>43.2%</td>
+</tr>
+<tr>
+<td>Resnet50</td>
+<td>272,517</td>
+<td>5</td>
+<td>81.1%</td>
+</tr>
+</tbody>
+</table>
+<p>Maybe the accuracy of the VGG19 could have been improved with BatchNormalisation or more epochs in training. But as the Resnet50 has a much better accuracy, I choose the Resnet50 for the dog breed classifier.</p>
+<p>I think the reason that the Resnet50 hat so much better accuracy is the nmber of bottleneck features. The Resnet50 has 2048 different features in contrast to 512 features of the VGG19 architecture. As our goal is to classify 133 different dog breed classes, where the difference between classes may be quite small, its important that the pre-trained network provieds enought detailed features so that the transfer learning can be successful.</p>
 
 </div>
 </div>
